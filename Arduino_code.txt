@@ -1,0 +1,114 @@
+#include <SoftwareSerial.h>
+SoftwareSerial BTserial(2, 3); // RX | TX
+
+char c = ' ';
+String text = "";
+
+int led_pin = 13;
+
+int base_clockwise = 4;
+int base_anticlockwise = 5; 
+int arm_up = 6;
+int arm_down = 7;
+int arm_forward = 8;
+int arm_backward = 9;
+int gripper_open = 10;
+int gripper_close = 11;
+
+void setup()
+{  
+  BTserial.begin(9600);  
+  pinMode(led_pin, OUTPUT);
+  pinMode(base_clockwise, OUTPUT);
+  pinMode(base_anticlockwise, OUTPUT);
+  pinMode(arm_up, OUTPUT);
+  pinMode(arm_down, OUTPUT);
+  pinMode(arm_forward, OUTPUT);
+  pinMode(arm_backward, OUTPUT);
+  pinMode(gripper_open, OUTPUT);
+  pinMode(gripper_close, OUTPUT);
+} 
+
+void loop() 
+{ 
+  while(BTserial.available())
+    {
+      delay(10);
+      c = BTserial.read();
+      text += c;
+    }
+  if(text.length() > 0)
+    {
+      digitalWrite(led_pin, HIGH);
+      if(text == "bc")
+        {
+          digitalWrite(base_clockwise, HIGH);
+          delay(100); 
+          digitalWrite(base_clockwise, LOW);
+        }
+       
+      if(text == "bac")
+        {
+          digitalWrite(base_anticlockwise, HIGH);
+          delay(100); 
+          digitalWrite(base_anticlockwise, LOW);
+        }
+                     
+       if(text == "au")
+         {
+           digitalWrite(arm_up, HIGH);
+           delay(100); 
+           digitalWrite(arm_up, LOW);
+         }
+
+       if(text == "ad")
+         {
+           digitalWrite(arm_down, HIGH);
+           delay(100); 
+           digitalWrite(arm_down, LOW);
+         }
+                  
+       if(text == "af")
+         {
+           digitalWrite(arm_forward, HIGH);
+           delay(100); 
+           digitalWrite(arm_forward, LOW);
+         }       
+
+       if(text == "ab")
+         {
+           digitalWrite(arm_backward, HIGH);
+           delay(100); 
+           digitalWrite(arm_backward, LOW);
+         }
+
+       if(text == "go")
+         {
+           digitalWrite(gripper_open, HIGH);
+           delay(300); 
+           digitalWrite(gripper_open, LOW);
+         }
+
+       if(text == "gc")
+         {
+           digitalWrite(gripper_close, HIGH);
+           delay(300); 
+           digitalWrite(gripper_close, LOW);
+         }
+    }
+    
+  else
+    {
+      digitalWrite(led_pin, LOW);
+      digitalWrite(base_clockwise, LOW);
+      digitalWrite(base_anticlockwise, LOW);
+      digitalWrite(arm_up, LOW);
+      digitalWrite(arm_down, LOW);
+      digitalWrite(arm_forward, LOW);
+      digitalWrite(arm_backward, LOW);
+      digitalWrite(gripper_open, LOW);
+      digitalWrite(gripper_close, LOW);
+    }               
+  text = "";
+  delay(100);
+}
