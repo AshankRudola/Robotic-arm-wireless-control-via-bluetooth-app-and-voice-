@@ -1,0 +1,72 @@
+//This is a text line block code for simple explanation
+//Should not be treated as original code
+
+when Bluetooth_image.BeforePicking
+  do set Bluetooth_image.Elements to BluetoothClient1.AddressandNames
+
+when Bluetooth.image.AfterPicking
+  do
+    if call BluetoothClient1.Connect
+                             address Bluetooth_image.Selection
+    then set Bluetooth_image.Elements to BluetoothClient1.AddressandNames
+
+when Clock1.Timer
+  do
+    if BluetoothClient1.IsConnected
+    then set Label1.Text to "Connected"
+    else set Label1.Text to "Not Connected"
+
+when Base_clockwise.Click
+  do 
+    call Bluetooth.Client1.SendText
+    text "bc"  
+
+when Base_anticlockwise.Click
+  do 
+    call Bluetooth.Client1.SendText
+    text "bac"  
+
+when Arm_up.Click
+  do 
+    call Bluetooth.Client1.SendText
+    text "au"  
+
+when Arm_down.Click
+  do 
+    call Bluetooth.Client1.SendText
+    text "ad"  
+
+when Arm_forward.Click
+  do 
+    call Bluetooth.Client1.SendText
+    text "af"
+
+when Arm_backward.Click
+  do 
+    call Bluetooth.Client1.SendText
+    text "ab"
+
+when Gripper_open.Click
+  do 
+    call Bluetooth.Client1.SendText
+    text "go"
+
+when Gripper_close.Click
+  do 
+    call Bluetooth.Client1.SendText
+    text "gc"
+
+when Screen1.BackPressed
+  do
+    call Notifier1.ShowChooseDialog
+      message "Do you really want to exit?"
+      title "Quit"
+      button1Text "Yes"
+      button2Text ""
+      cancelable true
+
+when Notifier1.AfterChoosing
+choice
+  do
+    if get choice = "Yes"
+    then close application
