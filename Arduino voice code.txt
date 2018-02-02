@@ -1,0 +1,73 @@
+#include <Servo.h>
+
+//Coded By: Angelo Casimiro (4/27/14)
+//Modified By: Ashank Rudola (31/1/18)
+//Voice Activated Arduino (Bluetooth + Android)
+//Feel free to modify it but remember to give credit
+
+Servo myservo;//BASE ROTATION
+Servo myservo2;//ARM_1 UP/DOWN
+Servo myservo3;//ARM_2 FOWARD/BACK
+Servo myservo4;//CLAW ROTATION
+Servo myservo5;//CLAW
+int pos = 90;
+String voice; 
+void allon(){
+    
+}
+void alloff(){     
+}
+
+void setup() {
+  Serial.begin(9600);
+  myservo.attach(11);
+  myservo2.attach(10);
+  myservo3.attach(9);
+  myservo4.attach(6);
+  myservo5.attach(5);
+  
+}
+//-----------------------------------------------------------------------//  
+void loop() {
+  while (Serial.available()){  //Check if there is an available byte to read
+  delay(10); //Delay added to make things stable 
+  char c = Serial.read(); //Conduct a serial read
+  if (c == '#') {break;} //Exit the loop when the # is detected after the word
+  voice += c; //Shorthand for voice = voice + c
+  }  
+  if (voice.length() > 0) {
+    Serial.println(voice); 
+    
+       if(voice == "*all on") {allon();}  //Turn Off All Pins (Call Function)
+ 
+
+  
+  //                      main code
+      
+  else if(voice == "*left") {myservo.write(pos -= 10);}//BASE ROTATION 
+  else if(voice == "*left left") {myservo.write(pos -= 30);}//BASE ROTATION               
+ 
+  
+  else if(voice == "*right right") {myservo.write(pos += 30);}//BASE ROTATION    
+  else if(voice == "*right") {myservo.write(pos += 10);}//BASE ROTATION 
+  
+  else if(voice == "*up") {myservo2.write(pos -= 10);}//ARM_1 UP/DOWN
+  else if(voice == "*up up") {myservo2.write(pos -= 30);}//ARM_1 UP/DOWN
+  
+  else if(voice == "*Down") {myservo2.write(pos += 10);}//ARM_1 UP/DOWN
+  else if(voice == "*down Down") {myservo2.write(pos += 30);}//ARM_1 UP/DOWN
+
+  else if(voice == "*rotate right") {myservo4.write(pos -= 10);}//CLAW ROTATION
+  else if(voice == "*rotate right right") {myservo4.write(pos -= 30);}//CLAW ROTATION
+  
+  else if(voice == "*rotate left") {myservo4.write(pos += 10);}//CLAW ROTATION
+  else if(voice == "*rotate left left") {myservo4.write(pos += 30);}//CLAW ROTATION
+ 
+  else if(voice == "*squeeze") {myservo5.write(pos -= 10);}//CLAW
+  else if(voice == "*squeeze squeeze") {myservo5.write(pos -= 30);}//CLAW
+  
+  else if(voice == "*release") {myservo5.write(pos += 10);}//CLAW
+  else if(voice == "*release release") {myservo5.write(pos += 30);}//CLAW
+  
+
+voice="";}} //Reset the variable after initiating
